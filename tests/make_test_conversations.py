@@ -1,13 +1,10 @@
 """Generate two ~1-minute SYNTHETIC consultations for testing speaker labels.
 
-  test-audio/three-speakers-english.wav       3 speakers, all English
-  test-audio/three-speakers-multilingual.wav  3 speakers: English / Hindi / Telugu
+  test-audio/two-speakers-english.wav        2 speakers (male Doctor, female Patient), all English
+  test-audio/two-speakers-multilingual.wav   2 speakers (male Doctor in English, female Patient in Hindi)
 
 Each comes with <name>.truth.json (who spoke when, exact timings) and <name>.script.md.
-Voices: Microsoft neural TTS via the `edge-tts` package. Only the made-up script text
-below is sent to that online service; no app or patient data is involved.
-
-    python tests/make_test_conversations.py
+Voices: Microsoft neural TTS via the `edge-tts` package.
 """
 from __future__ import annotations
 
@@ -15,7 +12,6 @@ import asyncio
 import io
 import json
 import random
-import struct
 import wave
 from pathlib import Path
 
@@ -28,54 +24,58 @@ RATE = 48000
 random.seed(11)
 np.random.seed(11)
 
-DOCTOR = ("Doctor", "en-IN-PrabhatNeural", "English")
+DOCTOR_EN = ("Doctor", "en-IN-PrabhatNeural", "English")
 PATIENT_EN = ("Patient", "en-IN-NeerjaNeural", "English")
-SON = ("Son", "en-GB-RyanNeural", "English")
 PATIENT_HI = ("Patient", "hi-IN-SwaraNeural", "Hindi")
-RELATIVE_TE = ("Relative", "te-IN-MohanNeural", "Telugu")
 
-ENGLISH = [
-    (DOCTOR, "Good morning. Please come in and have a seat. What seems to be the problem today?"),
-    (PATIENT_EN, "Good morning, doctor. I have had a cough and a sore throat for almost a week now."),
-    (SON, "She also had a fever two nights ago. It went up to a hundred and one."),
-    (DOCTOR, "I see. Any difficulty breathing, or pain in the chest?"),
-    (PATIENT_EN, "No chest pain. But I feel very tired in the afternoons."),
-    (SON, "And she is not eating much. Just some rice and curd."),
-    (DOCTOR, "Okay. Let me listen to your chest. Please take a deep breath."),
+ENGLISH_2SPK = [
+    (DOCTOR_EN, "Good morning. Please come in and take a seat. How can I help you today?"),
+    (PATIENT_EN, "Good morning, doctor. I have been having severe headaches and dizziness for the past four days."),
+    (DOCTOR_EN, "I see. Does the headache stay on one side of your head, or does it feel like pressure all over?"),
+    (PATIENT_EN, "It feels like constant pressure around my forehead and temples, especially in the late afternoon."),
+    (DOCTOR_EN, "Have you noticed any nausea, sensitivity to bright lights, or blurring in your vision?"),
+    (PATIENT_EN, "Yes, bright screen lights at work make it worse, but thankfully I have not vomited."),
+    (DOCTOR_EN, "Understood. How has your sleep and water intake been over this past week?"),
+    (PATIENT_EN, "My sleep has been quite irregular because of project deadlines, maybe only five hours a night, and I drink too much coffee."),
+    (DOCTOR_EN, "Alright. Let me check your blood pressure and examine your eyes first. Please relax your arm."),
     ("pause", 3.0),
-    (PATIENT_EN, "Is it something serious, doctor?"),
-    (DOCTOR, "Your chest sounds clear. It looks like a viral infection."),
-    (SON, "Does she need any tests?"),
-    (DOCTOR, "Let us do a blood test, just to be safe. Drink warm fluids and rest for three days."),
-    (PATIENT_EN, "Thank you, doctor."),
-    (SON, "We will come back on Friday with the report."),
+    (DOCTOR_EN, "Your blood pressure is slightly elevated at one hundred and thirty-five over eighty-eight."),
+    (PATIENT_EN, "Is that dangerous, doctor? Should I be worried?"),
+    (DOCTOR_EN, "It is mildly elevated, likely triggered by sleep deprivation, stress, and caffeine. I will prescribe a mild pain reliever and advise you to rest."),
+    (PATIENT_EN, "Do I need to undergo an MRI or any blood investigations right away?"),
+    (DOCTOR_EN, "Not immediately. Let us monitor your symptoms for one week. Please drink plenty of water, reduce screen time, and get at least seven hours of sleep."),
+    (PATIENT_EN, "Thank you very much, doctor. I will follow your advice and see you next Monday."),
+    (DOCTOR_EN, "You are welcome. Take care, and feel free to return sooner if the headache worsens."),
 ]
 
-MULTILINGUAL = [
-    (DOCTOR, "Good morning. Please sit down. Tell me, what is the problem?"),
-    (PATIENT_HI, "नमस्ते डॉक्टर साहब। मुझे तीन दिन से पेट में दर्द हो रहा है।"),
-    (RELATIVE_TE, "ఆమెకు రాత్రి వాంతులు కూడా అయ్యాయి డాక్టర్ గారు."),
-    (DOCTOR, "Is the pain on the right side, or all over the stomach?"),
-    (PATIENT_HI, "दाहिनी तरफ़ ज़्यादा है, और खाना खाने के बाद बढ़ जाता है।"),
-    (RELATIVE_TE, "ఆమె రెండు రోజులుగా సరిగ్గా తినడం లేదు."),
-    (DOCTOR, "Any fever? Did you take any medicine?"),
-    (PATIENT_HI, "हल्का बुखार था। मैंने सिर्फ़ एक पैरासिटामोल ली थी।"),
-    (RELATIVE_TE, "ఈ రోజు ఉదయం జ్వరం లేదు."),
-    (DOCTOR, "Okay. We will do an ultrasound of the abdomen and a blood test."),
-    (PATIENT_HI, "ठीक है डॉक्टर, रिपोर्ट कब तक आएगी?"),
-    (RELATIVE_TE, "మేము మధ్యాహ్నం మళ్ళీ వస్తాము."),
-    (DOCTOR, "The reports will be ready by evening. Please avoid oily food until then."),
+MULTILINGUAL_2SPK = [
+    (DOCTOR_EN, "Good morning. Please come inside and have a seat. What brings you to the clinic today?"),
+    (PATIENT_HI, "नमस्ते डॉक्टर साहब। मुझे पिछले चार-पांच दिनों से बहुत तेज़ खांसी और सीने में जकड़न महसूस हो रही है।"),
+    (DOCTOR_EN, "Do you have any fever or chills, especially during the evening hours?"),
+    (PATIENT_HI, "हाँ डॉक्टर, दो दिन पहले रात में हल्का बुखार था, लगभग सौ डिग्री, और पूरे बदन में दर्द भी था।"),
+    (DOCTOR_EN, "Are you coughing up any phlegm, or is it mostly a dry cough?"),
+    (PATIENT_HI, "शुरुआत में सूखी खांसी थी, लेकिन अब पीला कफ निकल रहा है और सांस लेने में भी थोड़ी तकलीफ होती है।"),
+    (DOCTOR_EN, "Alright. Please sit upright and take a few deep breaths while I listen to your chest with the stethoscope."),
+    ("pause", 3.0),
+    (DOCTOR_EN, "There is some mild wheezing in the lower lobes of your lungs. Have you taken any medications yet?"),
+    (PATIENT_HI, "मैंने घर पर सिर्फ़ अदरक की चाय पी थी और कल रात एक पैरासिटामोल की गोली ली थी।"),
+    (DOCTOR_EN, "Okay. It looks like an acute bronchial infection. I am prescribing an antibiotic along with a cough syrup for five days."),
+    (PATIENT_HI, "क्या मुझे कोई खून की जांच या छाती का एक्स-रे भी करवाना पड़ेगा?"),
+    (DOCTOR_EN, "Let us get a chest X-ray done today just to rule out pneumonia, and then start the course of medication immediately."),
+    (PATIENT_HI, "ठीक है डॉक्टर साहब, एक्स-रे की रिपोर्ट कब तक मिल जाएगी?"),
+    (DOCTOR_EN, "The X-ray will be ready in thirty minutes. Avoid cold drinks, take steam twice a day, and rest properly."),
+    (PATIENT_HI, "बहुत-बहुत धन्यवाद डॉक्टर साहब, मैं अभी एक्स-रे करवा कर आती हूँ।"),
+    (DOCTOR_EN, "You are welcome. Please show me the film as soon as it is done."),
 ]
 
 TRANSLATIONS = {
-    "नमस्ते डॉक्टर साहब। मुझे तीन दिन से पेट में दर्द हो रहा है।": "Hello doctor. I have had stomach pain for three days.",
-    "ఆమెకు రాత్రి వాంతులు కూడా అయ్యాయి డాక్టర్ గారు.": "She also vomited at night, doctor.",
-    "दाहिनी तरफ़ ज़्यादा है, और खाना खाने के बाद बढ़ जाता है।": "It is more on the right side, and it gets worse after eating.",
-    "ఆమె రెండు రోజులుగా సరిగ్గా తినడం లేదు.": "She has not been eating properly for two days.",
-    "हल्का बुखार था। मैंने सिर्फ़ एक पैरासिटामोल ली थी।": "There was a mild fever. I took only one paracetamol.",
-    "ఈ రోజు ఉదయం జ్వరం లేదు.": "There was no fever this morning.",
-    "ठीक है डॉक्टर, रिपोर्ट कब तक आएगी?": "Okay doctor, by when will the report come?",
-    "మేము మధ్యాహ్నం మళ్ళీ వస్తాము.": "We will come again in the afternoon.",
+    "नमस्ते डॉक्टर साहब। मुझे पिछले चार-पांच दिनों से बहुत तेज़ खांसी और सीने में जकड़न महसूस हो रही है।": "Hello doctor. I have had a severe cough and chest tightness for the last four to five days.",
+    "हाँ डॉक्टर, दो दिन पहले रात में हल्का बुखार था, लगभग सौ डिग्री, और पूरे बदन में दर्द भी था।": "Yes doctor, two days ago at night I had a mild fever, around one hundred degrees, and body ache too.",
+    "शुरुआत में सूखी खांसी थी, लेकिन अब पीला कफ निकल रहा है और सांस लेने में भी थोड़ी तकलीफ होती है।": "In the beginning it was a dry cough, but now there is yellow phlegm and some difficulty in breathing.",
+    "मैंने घर पर सिर्फ़ अदरक की चाय पी थी और कल रात एक पैरासिटामोल की गोली ली थी।": "At home I only had ginger tea and took one paracetamol tablet last night.",
+    "क्या मुझे कोई खून की जांच या छाती का एक्स-रे भी करवाना पड़ेगा?": "Will I also need a blood test or a chest X-ray done?",
+    "ठीक है डॉक्टर साहब, एक्स-रे की रिपोर्ट कब तक मिल जाएगी?": "Okay doctor, by when will the X-ray report be ready?",
+    "बहुत-बहुत धन्यवाद डॉक्टर साहब, मैं अभी एक्स-रे करवा कर आती हूँ।": "Thank you very much doctor, I will get the X-ray done right now and return.",
 }
 
 
@@ -125,7 +125,7 @@ async def build(name: str, script: list, title: str) -> dict:
                       **({"english": TRANSLATIONS[text]} if text in TRANSLATIONS else {})})
         parts.append(speech)
         t += dur
-        gap = random.uniform(0.45, 0.9)
+        gap = random.uniform(0.55, 1.0)
         parts.append(room(gap))
         t += gap
     parts.append(room(1.0))
@@ -150,9 +150,9 @@ async def build(name: str, script: list, title: str) -> dict:
 
 
 async def main():
-    a = await build("three-speakers-english", ENGLISH, "Three speakers – English")
-    b = await build("three-speakers-multilingual", MULTILINGUAL,
-                    "Three speakers – English / Hindi / Telugu")
+    a = await build("two-speakers-english", ENGLISH_2SPK, "Two speakers – English (Male Doctor, Female Patient)")
+    b = await build("two-speakers-multilingual", MULTILINGUAL_2SPK,
+                    "Two speakers – English / Hindi (Male Doctor English, Female Patient Hindi)")
     for m in (a, b):
         print(f"{m['file']}: {m['durationSec']} s, {len(m['turns'])} turns, speakers {m['speakers']}")
 

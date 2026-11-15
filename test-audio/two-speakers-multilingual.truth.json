@@ -1,0 +1,146 @@
+{
+ "file": "two-speakers-multilingual.wav",
+ "title": "Two speakers – English / Hindi (Male Doctor English, Female Patient Hindi)",
+ "durationSec": 121.0,
+ "speakers": [
+  "Doctor",
+  "Patient"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 7.94,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Good morning. Please come inside and have a seat. What brings you to the clinic today?"
+  },
+  {
+   "start": 8.93,
+   "end": 17.56,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "नमस्ते डॉक्टर साहब। मुझे पिछले चार-पांच दिनों से बहुत तेज़ खांसी और सीने में जकड़न महसूस हो रही है।",
+   "english": "Hello doctor. I have had a severe cough and chest tightness for the last four to five days."
+  },
+  {
+   "start": 18.55,
+   "end": 22.84,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Do you have any fever or chills, especially during the evening hours?"
+  },
+  {
+   "start": 23.68,
+   "end": 31.22,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "हाँ डॉक्टर, दो दिन पहले रात में हल्का बुखार था, लगभग सौ डिग्री, और पूरे बदन में दर्द भी था।",
+   "english": "Yes doctor, two days ago at night I had a mild fever, around one hundred degrees, and body ache too."
+  },
+  {
+   "start": 32.04,
+   "end": 36.01,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Are you coughing up any phlegm, or is it mostly a dry cough?"
+  },
+  {
+   "start": 36.63,
+   "end": 44.1,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "शुरुआत में सूखी खांसी थी, लेकिन अब पीला कफ निकल रहा है और सांस लेने में भी थोड़ी तकलीफ होती है।",
+   "english": "In the beginning it was a dry cough, but now there is yellow phlegm and some difficulty in breathing."
+  },
+  {
+   "start": 44.65,
+   "end": 52.49,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Alright. Please sit upright and take a few deep breaths while I listen to your chest with the stethoscope."
+  },
+  {
+   "start": 56.27,
+   "end": 63.6,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "There is some mild wheezing in the lower lobes of your lungs. Have you taken any medications yet?"
+  },
+  {
+   "start": 64.18,
+   "end": 70.1,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "मैंने घर पर सिर्फ़ अदरक की चाय पी थी और कल रात एक पैरासिटामोल की गोली ली थी।",
+   "english": "At home I only had ginger tea and took one paracetamol tablet last night."
+  },
+  {
+   "start": 70.73,
+   "end": 80.73,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Okay. It looks like an acute bronchial infection. I am prescribing an antibiotic along with a cough syrup for five days."
+  },
+  {
+   "start": 81.39,
+   "end": 85.74,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "क्या मुझे कोई खून की जांच या छाती का एक्स-रे भी करवाना पड़ेगा?",
+   "english": "Will I also need a blood test or a chest X-ray done?"
+  },
+  {
+   "start": 86.3,
+   "end": 94.01,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Let us get a chest X-ray done today just to rule out pneumonia, and then start the course of medication immediately."
+  },
+  {
+   "start": 94.77,
+   "end": 98.76,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "ठीक है डॉक्टर साहब, एक्स-रे की रिपोर्ट कब तक मिल जाएगी?",
+   "english": "Okay doctor, by when will the X-ray report be ready?"
+  },
+  {
+   "start": 99.51,
+   "end": 107.49,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "The X-ray will be ready in thirty minutes. Avoid cold drinks, take steam twice a day, and rest properly."
+  },
+  {
+   "start": 108.42,
+   "end": 113.34,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "बहुत-बहुत धन्यवाद डॉक्टर साहब, मैं अभी एक्स-रे करवा कर आती हूँ।",
+   "english": "Thank you very much doctor, I will get the X-ray done right now and return."
+  },
+  {
+   "start": 114.12,
+   "end": 119.19,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "You are welcome. Please show me the film as soon as it is done."
+  }
+ ]
+}

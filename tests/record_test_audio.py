@@ -21,6 +21,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ACCOUNT = dict(l.strip().split("=", 1) for l in open(ROOT / "tests" / "output" / "test-account.env")
                if "=" in l and not l.startswith("#"))
 PATIENTS = {
+    "two-speakers-english": "TTS Test – 2 speakers English",
+    "two-speakers-multilingual": "TTS Test – English Hindi",
     "three-speakers-english": "TTS Test – 3 speakers English",
     "three-speakers-multilingual": "TTS Test – English Hindi Telugu",
 }

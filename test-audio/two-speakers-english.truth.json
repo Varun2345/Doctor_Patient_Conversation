@@ -1,0 +1,139 @@
+{
+ "file": "two-speakers-english.wav",
+ "title": "Two speakers – English (Male Doctor, Female Patient)",
+ "durationSec": 125.4,
+ "speakers": [
+  "Doctor",
+  "Patient"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 7.34,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Good morning. Please come in and take a seat. How can I help you today?"
+  },
+  {
+   "start": 8.09,
+   "end": 14.58,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Good morning, doctor. I have been having severe headaches and dizziness for the past four days."
+  },
+  {
+   "start": 15.38,
+   "end": 22.35,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "I see. Does the headache stay on one side of your head, or does it feel like pressure all over?"
+  },
+  {
+   "start": 23.31,
+   "end": 29.08,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "It feels like constant pressure around my forehead and temples, especially in the late afternoon."
+  },
+  {
+   "start": 29.84,
+   "end": 35.17,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Have you noticed any nausea, sensitivity to bright lights, or blurring in your vision?"
+  },
+  {
+   "start": 35.95,
+   "end": 41.52,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Yes, bright screen lights at work make it worse, but thankfully I have not vomited."
+  },
+  {
+   "start": 42.33,
+   "end": 48.02,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Understood. How has your sleep and water intake been over this past week?"
+  },
+  {
+   "start": 48.65,
+   "end": 56.78,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "My sleep has been quite irregular because of project deadlines, maybe only five hours a night, and I drink too much coffee."
+  },
+  {
+   "start": 57.56,
+   "end": 65.55,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Alright. Let me check your blood pressure and examine your eyes first. Please relax your arm."
+  },
+  {
+   "start": 69.39,
+   "end": 75.35,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Your blood pressure is slightly elevated at one hundred and thirty-five over eighty-eight."
+  },
+  {
+   "start": 76.26,
+   "end": 80.19,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Is that dangerous, doctor? Should I be worried?"
+  },
+  {
+   "start": 80.78,
+   "end": 91.64,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "It is mildly elevated, likely triggered by sleep deprivation, stress, and caffeine. I will prescribe a mild pain reliever and advise you to rest."
+  },
+  {
+   "start": 92.32,
+   "end": 96.89,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Do I need to undergo an MRI or any blood investigations right away?"
+  },
+  {
+   "start": 97.48,
+   "end": 109.6,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Not immediately. Let us monitor your symptoms for one week. Please drink plenty of water, reduce screen time, and get at least seven hours of sleep."
+  },
+  {
+   "start": 110.52,
+   "end": 116.55,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Thank you very much, doctor. I will follow your advice and see you next Monday."
+  },
+  {
+   "start": 117.41,
+   "end": 123.79,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "You are welcome. Take care, and feel free to return sooner if the headache worsens."
+  }
+ ]
+}

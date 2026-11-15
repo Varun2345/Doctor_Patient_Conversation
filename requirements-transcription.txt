@@ -1,3 +1,4 @@
 # Optional: local speech-to-text (runs on this server; no audio leaves it)
 faster-whisper==1.1.*
+av<18
 requests>=2.31
