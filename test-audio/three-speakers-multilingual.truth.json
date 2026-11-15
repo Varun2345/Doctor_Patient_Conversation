@@ -1,0 +1,124 @@
+{
+ "file": "three-speakers-multilingual.wav",
+ "title": "Three speakers – English / Hindi / Telugu",
+ "durationSec": 59.4,
+ "speakers": [
+  "Doctor",
+  "Patient",
+  "Relative"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 6.63,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Good morning. Please sit down. Tell me, what is the problem?"
+  },
+  {
+   "start": 7.44,
+   "end": 12.83,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "नमस्ते डॉक्टर साहब। मुझे तीन दिन से पेट में दर्द हो रहा है।",
+   "english": "Hello doctor. I have had stomach pain for three days."
+  },
+  {
+   "start": 13.59,
+   "end": 16.45,
+   "speaker": "Relative",
+   "language": "Telugu",
+   "voice": "te-IN-MohanNeural",
+   "text": "ఆమెకు రాత్రి వాంతులు కూడా అయ్యాయి డాక్టర్ గారు.",
+   "english": "She also vomited at night, doctor."
+  },
+  {
+   "start": 16.92,
+   "end": 20.27,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Is the pain on the right side, or all over the stomach?"
+  },
+  {
+   "start": 21.17,
+   "end": 25.29,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "दाहिनी तरफ़ ज़्यादा है, और खाना खाने के बाद बढ़ जाता है।",
+   "english": "It is more on the right side, and it gets worse after eating."
+  },
+  {
+   "start": 26.17,
+   "end": 28.57,
+   "speaker": "Relative",
+   "language": "Telugu",
+   "voice": "te-IN-MohanNeural",
+   "text": "ఆమె రెండు రోజులుగా సరిగ్గా తినడం లేదు.",
+   "english": "She has not been eating properly for two days."
+  },
+  {
+   "start": 29.32,
+   "end": 32.46,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Any fever? Did you take any medicine?"
+  },
+  {
+   "start": 33.19,
+   "end": 37.9,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "हल्का बुखार था। मैंने सिर्फ़ एक पैरासिटामोल ली थी।",
+   "english": "There was a mild fever. I took only one paracetamol."
+  },
+  {
+   "start": 38.42,
+   "end": 40.18,
+   "speaker": "Relative",
+   "language": "Telugu",
+   "voice": "te-IN-MohanNeural",
+   "text": "ఈ రోజు ఉదయం జ్వరం లేదు.",
+   "english": "There was no fever this morning."
+  },
+  {
+   "start": 40.64,
+   "end": 45.9,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Okay. We will do an ultrasound of the abdomen and a blood test."
+  },
+  {
+   "start": 46.59,
+   "end": 49.25,
+   "speaker": "Patient",
+   "language": "Hindi",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "ठीक है डॉक्टर, रिपोर्ट कब तक आएगी?",
+   "english": "Okay doctor, by when will the report come?"
+  },
+  {
+   "start": 49.73,
+   "end": 51.68,
+   "speaker": "Relative",
+   "language": "Telugu",
+   "voice": "te-IN-MohanNeural",
+   "text": "మేము మధ్యాహ్నం మళ్ళీ వస్తాము.",
+   "english": "We will come again in the afternoon."
+  },
+  {
+   "start": 52.21,
+   "end": 57.8,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "The reports will be ready by evening. Please avoid oily food until then."
+  }
+ ]
+}

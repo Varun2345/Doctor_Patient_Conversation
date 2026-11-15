@@ -1,0 +1,116 @@
+{
+ "file": "three-speakers-english.wav",
+ "title": "Three speakers – English",
+ "durationSec": 67.5,
+ "speakers": [
+  "Doctor",
+  "Patient",
+  "Son"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 7.77,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Good morning. Please come in and have a seat. What seems to be the problem today?"
+  },
+  {
+   "start": 8.42,
+   "end": 14.55,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Good morning, doctor. I have had a cough and a sore throat for almost a week now."
+  },
+  {
+   "start": 15.26,
+   "end": 19.76,
+   "speaker": "Son",
+   "language": "English",
+   "voice": "en-GB-RyanNeural",
+   "text": "She also had a fever two nights ago. It went up to a hundred and one."
+  },
+  {
+   "start": 20.62,
+   "end": 24.93,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "I see. Any difficulty breathing, or pain in the chest?"
+  },
+  {
+   "start": 25.59,
+   "end": 29.97,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "No chest pain. But I feel very tired in the afternoons."
+  },
+  {
+   "start": 30.64,
+   "end": 34.36,
+   "speaker": "Son",
+   "language": "English",
+   "voice": "en-GB-RyanNeural",
+   "text": "And she is not eating much. Just some rice and curd."
+  },
+  {
+   "start": 35.07,
+   "end": 40.69,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Okay. Let me listen to your chest. Please take a deep breath."
+  },
+  {
+   "start": 44.22,
+   "end": 46.31,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Is it something serious, doctor?"
+  },
+  {
+   "start": 46.99,
+   "end": 51.73,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Your chest sounds clear. It looks like a viral infection."
+  },
+  {
+   "start": 52.47,
+   "end": 53.73,
+   "speaker": "Son",
+   "language": "English",
+   "voice": "en-GB-RyanNeural",
+   "text": "Does she need any tests?"
+  },
+  {
+   "start": 54.53,
+   "end": 61.32,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Let us do a blood test, just to be safe. Drink warm fluids and rest for three days."
+  },
+  {
+   "start": 61.81,
+   "end": 63.24,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Thank you, doctor."
+  },
+  {
+   "start": 63.82,
+   "end": 66.0,
+   "speaker": "Son",
+   "language": "English",
+   "voice": "en-GB-RyanNeural",
+   "text": "We will come back on Friday with the report."
+  }
+ ]
+}

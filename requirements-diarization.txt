@@ -1,0 +1,4 @@
+# Optional: local speaker labels (anonymous Speaker A/B) for the after-session transcript.
+# Runs on CPU with ONNX Runtime - no PyTorch, no Hugging Face token, no audio leaves the server.
+# Requires requirements-transcription.txt as well. Models: python -m app.manage download-diarization-models
+sherpa-onnx==1.10.*
