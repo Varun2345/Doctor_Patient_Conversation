@@ -1,0 +1,132 @@
+{
+ "file": "three-speakers-english.wav",
+ "title": "Three speakers – English (Doctor, Patient, Attendant)",
+ "durationSec": 102.6,
+ "speakers": [
+  "Attendant",
+  "Doctor",
+  "Patient"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 7.72,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Good morning. Please take a seat. Could you both introduce yourselves before we begin?"
+  },
+  {
+   "start": 8.48,
+   "end": 14.75,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Good morning, doctor. I am Meera, and this is my brother, who came with me today."
+  },
+  {
+   "start": 15.55,
+   "end": 21.69,
+   "speaker": "Attendant",
+   "language": "English",
+   "voice": "en-US-GuyNeural",
+   "text": "Hello, doctor. I am Arun. I brought a written list of what happened this week."
+  },
+  {
+   "start": 22.66,
+   "end": 28.65,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Thank you. Meera, please describe how you have been feeling, in your own words."
+  },
+  {
+   "start": 29.41,
+   "end": 35.96,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "I have felt tired for several days. Yesterday I also felt dizzy when I stood up at work."
+  },
+  {
+   "start": 36.74,
+   "end": 42.19,
+   "speaker": "Attendant",
+   "language": "English",
+   "voice": "en-US-GuyNeural",
+   "text": "She called me in the afternoon. When I arrived, she was sitting down and having some water."
+  },
+  {
+   "start": 43.01,
+   "end": 48.59,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Meera, when did the tiredness begin, and has it been constant or does it come and go?"
+  },
+  {
+   "start": 49.22,
+   "end": 55.31,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "It began on Monday. It comes and goes, but I notice it more after a busy morning."
+  },
+  {
+   "start": 56.09,
+   "end": 62.08,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Arun, please read the times from your notes, then I will ask Meera a few more questions."
+  },
+  {
+   "start": 62.91,
+   "end": 68.9,
+   "speaker": "Attendant",
+   "language": "English",
+   "voice": "en-US-GuyNeural",
+   "text": "The first call was at two fifteen. We left the office at three, and she rested at home that evening."
+  },
+  {
+   "start": 71.81,
+   "end": 78.74,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "I slept earlier than usual last night. This morning I felt a little better, but I was still worried."
+  },
+  {
+   "start": 79.34,
+   "end": 86.21,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "Thank you both. I will check your observations and examine you before we discuss the next steps."
+  },
+  {
+   "start": 86.9,
+   "end": 91.62,
+   "speaker": "Attendant",
+   "language": "English",
+   "voice": "en-US-GuyNeural",
+   "text": "I will keep the notes here. Please let me know if you need any other details."
+  },
+  {
+   "start": 92.21,
+   "end": 92.7,
+   "speaker": "Patient",
+   "language": "English",
+   "voice": "en-IN-NeerjaNeural",
+   "text": "Thank you, doctor. I would like to understand what we should keep track of after this visit."
+  },
+  {
+   "start": 93.62,
+   "end": 100.75,
+   "speaker": "Doctor",
+   "language": "English",
+   "voice": "en-IN-PrabhatNeural",
+   "text": "We will go through that together once the examination is complete. Please relax your arm for now."
+  }
+ ]
+}

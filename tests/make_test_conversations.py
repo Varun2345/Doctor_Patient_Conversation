@@ -1,14 +1,18 @@
-"""Generate two ~1-minute SYNTHETIC consultations for testing speaker labels.
+"""Generate SYNTHETIC consultations for testing speaker labels.
 
   test-audio/two-speakers-english.wav        2 speakers (male Doctor, female Patient), all English
   test-audio/two-speakers-multilingual.wav   2 speakers (male Doctor in English, female Patient in Hindi)
+  test-audio/three-speakers-english.wav      3 speakers (Doctor, Patient, Attendant), all English
+  test-audio/three-speakers-multilingual.wav 3 speakers, code-mixed English / Hindi / Telugu
 
 Each comes with <name>.truth.json (who spoke when, exact timings) and <name>.script.md.
 Voices: Microsoft neural TTS via the `edge-tts` package.
+Use --sample three-speakers-english to generate only the three-person sample.
 """
 from __future__ import annotations
 
 import asyncio
+import argparse
 import io
 import json
 import random
@@ -27,6 +31,65 @@ np.random.seed(11)
 DOCTOR_EN = ("Doctor", "en-IN-PrabhatNeural", "English")
 PATIENT_EN = ("Patient", "en-IN-NeerjaNeural", "English")
 PATIENT_HI = ("Patient", "hi-IN-SwaraNeural", "Hindi")
+ATTENDANT_EN = ("Attendant", "en-US-GuyNeural", "English")
+DOCTOR_MIX = ("Doctor", "hi-IN-MadhurNeural", "Hindi / English")
+PATIENT_MIX = ("Patient", "hi-IN-SwaraNeural", "Hindi / English")
+ATTENDANT_MIX = ("Attendant", "te-IN-MohanNeural", "Telugu / English")
+
+# Keep the same TTS voice for each person across language switches, including within turns.
+MULTILINGUAL_3SPK_LINES = [
+    (DOCTOR_MIX, "Good morning, आइए बैठिए। Please tell me, आज आपको क्या परेशानी हो रही है?",
+     "Good morning, please sit down. Tell me what is troubling you today."),
+    (PATIENT_MIX, "नमस्ते doctor. पिछले तीन दिनों से मुझे headache और थकान महसूस हो रही है, especially शाम को।",
+     "Hello doctor. For three days I have had a headache and tiredness, especially in the evening."),
+    (ATTENDANT_MIX, "Good morning doctor. నేను ఆమె అన్నయ్యను. Yesterday afternoon ఆమె నాకు phone చేసింది.",
+     "Good morning doctor. I am her elder brother. Yesterday afternoon she called me."),
+    (DOCTOR_MIX, "ठीक है, पहले patient से सुनते हैं। यह headache लगातार रहता है, या बीच में आराम मिलता है?",
+     "Okay, let us hear from the patient first. Is the headache constant, or do you get relief in between?"),
+    (PATIENT_MIX, "बीच में आराम मिलता है। Office में screen देखते समय दर्द बढ़ता है, लेकिन rest करने पर थोड़ा कम होता है।",
+     "I get relief in between. Looking at a screen at the office makes it worse, but rest helps a little."),
+    (ATTENDANT_MIX, "ఆమె office నుంచి వచ్చాక rest తీసుకుంది. Dinner తర్వాత కొంచెం better అనిపించిందని చెప్పింది.",
+     "She rested after coming home from the office. She said she felt a little better after dinner."),
+    (DOCTOR_MIX, "आपकी sleep कैसी रही? Last week काम के कारण देर तक जागना पड़ा था क्या?",
+     "How has your sleep been? Did work keep you up late last week?"),
+    (PATIENT_MIX, "हाँ, project deadline थी। मैं रोज़ लगभग five hours सोई, और lunch भी कभी कभी skip किया।",
+     "Yes, there was a project deadline. I slept about five hours a day and sometimes skipped lunch."),
+    (ATTENDANT_MIX, "నేను timings note చేశాను doctor. Monday నుంచి late nights ఉన్నాయి, కానీ weekend లో బాగా నిద్రపోయింది.",
+     "I noted the timings, doctor. There have been late nights since Monday, but she slept well over the weekend."),
+    (DOCTOR_MIX, "धन्यवाद। अब मैं blood pressure check करूँगा। Please relax your arm और सामान्य तरीके से सांस लीजिए।",
+     "Thank you. I will now check your blood pressure. Please relax your arm and breathe normally."),
+    ("pause", 2.0),
+    (PATIENT_MIX, "ठीक है doctor. क्या मैं अपना symptom diary दिखाऊँ? मैंने headache के times उसमें लिखे हैं।",
+     "Okay doctor. Shall I show you my symptom diary? I wrote the headache timings in it."),
+    (ATTENDANT_MIX, "ఆ diary నా bag లో ఉంది. One minute, తీసి ఇస్తాను. Yesterday readings కూడా అందులో ఉన్నాయి.",
+     "That diary is in my bag. One minute, I will take it out. Yesterday's readings are also in it."),
+    (DOCTOR_MIX, "हाँ, diary दिखाइए। Examination के बाद हम next steps और follow up के बारे में बात करेंगे।",
+     "Yes, show me the diary. After the examination we will discuss the next steps and follow-up."),
+    (PATIENT_MIX, "Thank you doctor. मैं details समझना चाहती हूँ, ताकि घर जाकर सही तरीके से notes रख सकूँ।",
+     "Thank you doctor. I want to understand the details so I can keep proper notes at home."),
+    (ATTENDANT_MIX, "Thank you. మీరు చెప్పే instructions మేము రాసుకుంటాము, follow up కి కూడా కలిసి వస్తాము.",
+     "Thank you. We will write down your instructions and come together for the follow-up."),
+]
+MULTILINGUAL_3SPK = [(line[0], line[1]) for line in MULTILINGUAL_3SPK_LINES]
+
+ENGLISH_3SPK = [
+    (DOCTOR_EN, "Good morning. Please take a seat. Could you both introduce yourselves before we begin?"),
+    (PATIENT_EN, "Good morning, doctor. I am Meera, and this is my brother, who came with me today."),
+    (ATTENDANT_EN, "Hello, doctor. I am Arun. I brought a written list of what happened this week."),
+    (DOCTOR_EN, "Thank you. Meera, please describe how you have been feeling, in your own words."),
+    (PATIENT_EN, "I have felt tired for several days. Yesterday I also felt dizzy when I stood up at work."),
+    (ATTENDANT_EN, "She called me in the afternoon. When I arrived, she was sitting down and having some water."),
+    (DOCTOR_EN, "Meera, when did the tiredness begin, and has it been constant or does it come and go?"),
+    (PATIENT_EN, "It began on Monday. It comes and goes, but I notice it more after a busy morning."),
+    (DOCTOR_EN, "Arun, please read the times from your notes, then I will ask Meera a few more questions."),
+    (ATTENDANT_EN, "The first call was at two fifteen. We left the office at three, and she rested at home that evening."),
+    ("pause", 2.0),
+    (PATIENT_EN, "I slept earlier than usual last night. This morning I felt a little better, but I was still worried."),
+    (DOCTOR_EN, "Thank you both. I will check your observations and examine you before we discuss the next steps."),
+    (ATTENDANT_EN, "I will keep the notes here. Please let me know if you need any other details."),
+    (PATIENT_EN, "Thank you, doctor. I would like to understand what we should keep track of after this visit."),
+    (DOCTOR_EN, "We will go through that together once the examination is complete. Please relax your arm for now."),
+]
 
 ENGLISH_2SPK = [
     (DOCTOR_EN, "Good morning. Please come in and take a seat. How can I help you today?"),
@@ -77,6 +140,7 @@ TRANSLATIONS = {
     "ठीक है डॉक्टर साहब, एक्स-रे की रिपोर्ट कब तक मिल जाएगी?": "Okay doctor, by when will the X-ray report be ready?",
     "बहुत-बहुत धन्यवाद डॉक्टर साहब, मैं अभी एक्स-रे करवा कर आती हूँ।": "Thank you very much doctor, I will get the X-ray done right now and return.",
 }
+TRANSLATIONS.update({line[1]: line[2] for line in MULTILINGUAL_3SPK_LINES if line[0] != "pause"})
 
 
 async def tts(text: str, voice: str) -> bytes:
@@ -150,10 +214,18 @@ async def build(name: str, script: list, title: str) -> dict:
 
 
 async def main():
-    a = await build("two-speakers-english", ENGLISH_2SPK, "Two speakers – English (Male Doctor, Female Patient)")
-    b = await build("two-speakers-multilingual", MULTILINGUAL_2SPK,
-                    "Two speakers – English / Hindi (Male Doctor English, Female Patient Hindi)")
-    for m in (a, b):
+    samples = {
+        "two-speakers-english": (ENGLISH_2SPK, "Two speakers – English (Male Doctor, Female Patient)"),
+        "two-speakers-multilingual": (MULTILINGUAL_2SPK, "Two speakers – English / Hindi (Male Doctor English, Female Patient Hindi)"),
+        "three-speakers-english": (ENGLISH_3SPK, "Three speakers – English (Doctor, Patient, Attendant)"),
+        "three-speakers-multilingual": (MULTILINGUAL_3SPK, "Three speakers – code-mixed English / Hindi / Telugu"),
+    }
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--sample", choices=samples, help="Generate just one sample; default: all samples")
+    args = parser.parse_args()
+    for name in ([args.sample] if args.sample else samples):
+        script, title = samples[name]
+        m = await build(name, script, title)
         print(f"{m['file']}: {m['durationSec']} s, {len(m['turns'])} turns, speakers {m['speakers']}")
 
 

@@ -81,6 +81,8 @@ const cap = (t) => t ? t[0].toUpperCase() + t.slice(1) : t;
 
 /* ------------------------------------------------------------------ icons + avatars */
 const ICONS = {
+  moon: ["M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13z"],
+  sun: ["M16 12a4 4 0 1 0-8 0a4 4 0 0 0 8 0", "M12 2v2", "M12 20v2", "M2 12h2", "M20 12h2", "M5 5l1.5 1.5", "M17.5 17.5L19 19", "M5 19l1.5-1.5", "M17.5 6.5L19 5"],
   mic: ["M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z", "M19 11a7 7 0 0 1-14 0", "M12 18v3", "M8.5 21h7"],
   plus: ["M12 5v14", "M5 12h14"],
   search: ["M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14z", "M20 20l-3.6-3.6"],
@@ -624,6 +626,26 @@ async function route() {
 }
 
 /* ------------------------------------------------------------------ chrome */
+function themeToggle() {
+  const button = h("button", { class: "linkbtn theme-toggle", type: "button" });
+  function update() {
+    const dark = document.documentElement.dataset.theme === "dark";
+    const label = `Switch to ${dark ? "light" : "dark"} theme`;
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
+    button.setAttribute("aria-pressed", String(dark));
+    button.replaceChildren(icon(dark ? "sun" : "moon"));
+  }
+  button.addEventListener("click", () => {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem("consult-recorder-theme", theme); } catch (_) { /* Theme still works without storage. */ }
+    update();
+  });
+  update();
+  return button;
+}
+
 function brandBlock() {
   const c = state.config;
   const logo = c.logoUrl
@@ -635,15 +657,16 @@ function brandBlock() {
       h("span", { class: "brand-sub" }, c.institutionName)));
 }
 
-function renderChrome() {
+function renderChrome(showAccount = true) {
   const bar = $("#topbar");
   const busy = recorderBusy();
   bar.replaceChildren(h("div", { class: "topbar-inner" },
     brandBlock(),
     h("span", { class: "spacer" }),
-    state.me ? h("div", { class: "who" }, avatar(state.me.fullName, "sm"),
+    themeToggle(),
+    showAccount && state.me ? h("div", { class: "who" }, avatar(state.me.fullName, "sm"),
       h("span", { class: "who-text" }, h("span", { class: "who-name" }, state.me.fullName), h("small", {}, state.me.email))) : null,
-    state.me ? h("button", { class: "linkbtn signout", disabled: busy, title: busy ? "Stop the recording first" : "Sign out", onclick: logout },
+    showAccount && state.me ? h("button", { class: "linkbtn signout", disabled: busy, title: busy ? "Stop the recording first" : "Sign out", onclick: logout },
       icon("logout"), h("span", {}, "Sign out")) : null));
   bar.hidden = false;
   renderFooter();
@@ -663,8 +686,7 @@ function renderFooter() {
 
 /* Two-column card used by sign-in and sign-up. */
 function authShell(...children) {
-  $("#topbar").hidden = true;
-  renderFooter();
+  renderChrome(false);
   const c = state.config;
   return h("div", { class: "auth" },
     h("aside", { class: "auth-aside" },
@@ -1558,6 +1580,8 @@ async function viewPatient(pid) {
 
 /* ------------------------------------------------------------------ boot */
 (async function boot() {
+  $("#topbar").replaceChildren(h("div", { class: "topbar-inner" }, h("span", { class: "spacer" }), themeToggle()));
+  $("#topbar").hidden = false;
   try {
     state.config = await api("/api/config");
   } catch (err) {

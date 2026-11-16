@@ -1,0 +1,147 @@
+{
+ "file": "three-speakers-multilingual.wav",
+ "title": "Three speakers – code-mixed English / Hindi / Telugu",
+ "durationSec": 127.7,
+ "speakers": [
+  "Attendant",
+  "Doctor",
+  "Patient"
+ ],
+ "turns": [
+  {
+   "start": 1.0,
+   "end": 7.25,
+   "speaker": "Doctor",
+   "language": "Hindi / English",
+   "voice": "hi-IN-MadhurNeural",
+   "text": "Good morning, आइए बैठिए। Please tell me, आज आपको क्या परेशानी हो रही है?",
+   "english": "Good morning, please sit down. Tell me what is troubling you today."
+  },
+  {
+   "start": 8.01,
+   "end": 15.66,
+   "speaker": "Patient",
+   "language": "Hindi / English",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "नमस्ते doctor. पिछले तीन दिनों से मुझे headache और थकान महसूस हो रही है, especially शाम को।",
+   "english": "Hello doctor. For three days I have had a headache and tiredness, especially in the evening."
+  },
+  {
+   "start": 16.47,
+   "end": 24.0,
+   "speaker": "Attendant",
+   "language": "Telugu / English",
+   "voice": "te-IN-MohanNeural",
+   "text": "Good morning doctor. నేను ఆమె అన్నయ్యను. Yesterday afternoon ఆమె నాకు phone చేసింది.",
+   "english": "Good morning doctor. I am her elder brother. Yesterday afternoon she called me."
+  },
+  {
+   "start": 24.96,
+   "end": 33.05,
+   "speaker": "Doctor",
+   "language": "Hindi / English",
+   "voice": "hi-IN-MadhurNeural",
+   "text": "ठीक है, पहले patient से सुनते हैं। यह headache लगातार रहता है, या बीच में आराम मिलता है?",
+   "english": "Okay, let us hear from the patient first. Is the headache constant, or do you get relief in between?"
+  },
+  {
+   "start": 33.81,
+   "end": 41.94,
+   "speaker": "Patient",
+   "language": "Hindi / English",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "बीच में आराम मिलता है। Office में screen देखते समय दर्द बढ़ता है, लेकिन rest करने पर थोड़ा कम होता है।",
+   "english": "I get relief in between. Looking at a screen at the office makes it worse, but rest helps a little."
+  },
+  {
+   "start": 42.72,
+   "end": 49.47,
+   "speaker": "Attendant",
+   "language": "Telugu / English",
+   "voice": "te-IN-MohanNeural",
+   "text": "ఆమె office నుంచి వచ్చాక rest తీసుకుంది. Dinner తర్వాత కొంచెం better అనిపించిందని చెప్పింది.",
+   "english": "She rested after coming home from the office. She said she felt a little better after dinner."
+  },
+  {
+   "start": 50.29,
+   "end": 56.23,
+   "speaker": "Doctor",
+   "language": "Hindi / English",
+   "voice": "hi-IN-MadhurNeural",
+   "text": "आपकी sleep कैसी रही? Last week काम के कारण देर तक जागना पड़ा था क्या?",
+   "english": "How has your sleep been? Did work keep you up late last week?"
+  },
+  {
+   "start": 56.86,
+   "end": 64.55,
+   "speaker": "Patient",
+   "language": "Hindi / English",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "हाँ, project deadline थी। मैं रोज़ लगभग five hours सोई, और lunch भी कभी कभी skip किया।",
+   "english": "Yes, there was a project deadline. I slept about five hours a day and sometimes skipped lunch."
+  },
+  {
+   "start": 65.33,
+   "end": 73.16,
+   "speaker": "Attendant",
+   "language": "Telugu / English",
+   "voice": "te-IN-MohanNeural",
+   "text": "నేను timings note చేశాను doctor. Monday నుంచి late nights ఉన్నాయి, కానీ weekend లో బాగా నిద్రపోయింది.",
+   "english": "I noted the timings, doctor. There have been late nights since Monday, but she slept well over the weekend."
+  },
+  {
+   "start": 74.0,
+   "end": 82.88,
+   "speaker": "Doctor",
+   "language": "Hindi / English",
+   "voice": "hi-IN-MadhurNeural",
+   "text": "धन्यवाद। अब मैं blood pressure check करूँगा। Please relax your arm और सामान्य तरीके से सांस लीजिए।",
+   "english": "Thank you. I will now check your blood pressure. Please relax your arm and breathe normally."
+  },
+  {
+   "start": 85.78,
+   "end": 93.44,
+   "speaker": "Patient",
+   "language": "Hindi / English",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "ठीक है doctor. क्या मैं अपना symptom diary दिखाऊँ? मैंने headache के times उसमें लिखे हैं।",
+   "english": "Okay doctor. Shall I show you my symptom diary? I wrote the headache timings in it."
+  },
+  {
+   "start": 94.04,
+   "end": 102.1,
+   "speaker": "Attendant",
+   "language": "Telugu / English",
+   "voice": "te-IN-MohanNeural",
+   "text": "ఆ diary నా bag లో ఉంది. One minute, తీసి ఇస్తాను. Yesterday readings కూడా అందులో ఉన్నాయి.",
+   "english": "That diary is in my bag. One minute, I will take it out. Yesterday's readings are also in it."
+  },
+  {
+   "start": 102.79,
+   "end": 110.24,
+   "speaker": "Doctor",
+   "language": "Hindi / English",
+   "voice": "hi-IN-MadhurNeural",
+   "text": "हाँ, diary दिखाइए। Examination के बाद हम next steps और follow up के बारे में बात करेंगे।",
+   "english": "Yes, show me the diary. After the examination we will discuss the next steps and follow-up."
+  },
+  {
+   "start": 110.83,
+   "end": 118.48,
+   "speaker": "Patient",
+   "language": "Hindi / English",
+   "voice": "hi-IN-SwaraNeural",
+   "text": "Thank you doctor. मैं details समझना चाहती हूँ, ताकि घर जाकर सही तरीके से notes रख सकूँ।",
+   "english": "Thank you doctor. I want to understand the details so I can keep proper notes at home."
+  },
+  {
+   "start": 119.39,
+   "end": 125.82,
+   "speaker": "Attendant",
+   "language": "Telugu / English",
+   "voice": "te-IN-MohanNeural",
+   "text": "Thank you. మీరు చెప్పే instructions మేము రాసుకుంటాము, follow up కి కూడా కలిసి వస్తాము.",
+   "english": "Thank you. We will write down your instructions and come together for the follow-up."
+  }
+ ]
+}
