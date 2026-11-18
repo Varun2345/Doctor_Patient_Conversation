@@ -9,7 +9,7 @@ notes or summaries, or infer who is the doctor and who is the patient.
 
 ---
 
-## 0. Status & handover (15 Nov 2026)
+## 0. Status & handover
 
 **Works and tested** (`tests/e2e_test.py`, 40/40): sign-in/sign-up, patient required before
 recording, one-tap recording with crash/outage recovery, audio stored once (GridFS), Whisper
@@ -26,30 +26,6 @@ stored transcript), anonymous speaker labels, per-doctor access.
 * Test account: `python -m app.manage create-doctor --email test.doctor@pilot.local --name "Dr. Test Doctor"`,
   then write `tests/output/test-account.env` with `TEST_DOCTOR_EMAIL=` and `TEST_DOCTOR_PASSWORD=`.
   `tests/reset_test_data.py` only deletes that account's data.
-
-**Open work, in priority order**
-1. **Speaker labels (main open problem).** sherpa-onnx merges similar voices (two male test
-   voices → one label; 9/13 turns right on both test files). **pyannote community-1** is wired
-   in as an option (`DIARIZATION_ENGINE=pyannote`, code in `app/diarize_pyannote.py`). It
-   scored better on the English file (3 distinct people, 10/13) and equal on the mixed file
-   (9/13); see `tests/score_diarization.py`. But it needs about 3 GB more memory: on the dev
-   laptop it failed with "out of memory" while the app server was running, so it was switched
-   back. To try it on a machine with more free memory:
-   ```bash
-   python -m venv .venv-diar
-   .venv-diar\Scripts\python -m pip install "torch==2.8.*" "torchaudio==2.8.*" --index-url https://download.pytorch.org/whl/cpu
-   .venv-diar\Scripts\python -m pip install "pyannote.audio>=4,<5"
-   ```
-   Then accept the model conditions on huggingface.co/pyannote/speaker-diarization-community-1
-   with a Hugging Face account, put that account's read token in `.env` as `HF_TOKEN=`, set
-   `DIARIZATION_ENGINE=pyannote`, and run `python tests/score_diarization.py --engine pyannote`.
-   Also test with **real voices**: the synthetic TTS voices are probably harder than real people.
-2. **Telugu transcription.** `small` writes Telugu phonetically in Devanagari. Options:
-   large-v3-turbo on an NVIDIA GPU (unusable on CPU: 6× slower than real time; GPU support is
-   built in via `WHISPER_DEVICE=auto` + `pip install nvidia-cublas-cu12 nvidia-cudnn-cu12`,
-   not yet benchmarked), or AI4Bharat IndicConformer for the Hindi/Telugu parts.
-3. **Hospital deployment decisions** in section 6 (in-hospital MongoDB, HTTPS, access rules,
-   consent, retention).
 
 Tools: `tests/bench_asr.py` (Whisper models: speed and accuracy), `tests/score_diarization.py`
 and `tests/sweep_diarization.py` (speaker labels), `tests/record_test_audio.py` (records
@@ -75,6 +51,27 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
 Open <http://localhost:8000> and sign in.
+
+For a separate hospital installation, start with `docs/hospital.env.example` and see
+`docs/hospital-handover.md` for credential handling, offline models, local MongoDB,
+and backup considerations. Do not distribute the developer's `.env`.
+
+To replace Atlas with an empty local database without copying existing data, follow
+[the local MongoDB setup guide](docs/local-mongodb-setup.md).
+
+### App branding
+
+Set the header title and subtitle in `.env`, then restart the server:
+
+```dotenv
+APP_TITLE=ClinCord
+APP_SUBTITLE=Clinical Conversation Recording
+```
+
+The name appears in the browser tab, header, and sign-in/sign-up pages. Set
+`APP_SUBTITLE=` to hide the subtitle. The waveform emblem is `branding/logo.svg`;
+replace it to customize the logo. The configured `BRANDING_DIR` is searched for
+`logo.svg`, `logo.png`, `logo.jpg`, `logo.jpeg`, then `logo.webp`, in that order.
 
 ### Using it from other machines on the hospital network
 
@@ -162,8 +159,12 @@ MongoDB collections in `MONGO_DB_NAME`: `doctors`, `patients`, `consultations`, 
 * `TRANSCRIPTION_ENGINE=faster-whisper` runs Whisper **on this server**. No audio or text is
   sent anywhere. It runs after the recording is saved, so it can never interrupt a recording.
   Long audio is processed in windows internally and the whole file is covered.
-* The model weights must be downloaded once (`python -m app.manage download-model`), from
-  the internet or copied in from another machine. Then set `HF_HUB_OFFLINE=1`.
+* For a fresh installation with no models, keep `HF_HUB_OFFLINE=0` and run
+  `python -m app.manage download-model` and `python -m app.manage download-diarization-models`.
+  These public downloads require internet access but no account or token. After both
+  succeed, set `HF_HUB_OFFLINE=1` and restart for cached-only Whisper loading.
+  Alternatively, copy the complete model cache and ONNX files into the new installation.
+  See `docs/hospital-handover.md` for the setup sequence.
 * Doctors can edit the transcript. There is **one stored transcript per consultation**
   (`transcript.segments` + `transcript.text`): saving an edit replaces it, and the page shows
   only that latest version (with "Last edited by …"). Earlier versions are not kept. The audio
@@ -174,7 +175,7 @@ MongoDB collections in `MONGO_DB_NAME`: `doctors`, `patients`, `consultations`, 
   their own language in the transcript. See `test-audio/README.md` for the comparison.
 * No external transcription API exists anywhere in the code.
 
-### Choosing the Whisper model (measured 15 Nov 2026)
+### Choosing the Whisper model 
 
 Settings: `WHISPER_MODEL`, `WHISPER_DEVICE=auto` (GPU if available), `WHISPER_LANGUAGES=en,hi,te`.
 
@@ -244,8 +245,11 @@ How it works, after the recording is saved:
   transcript; the audio is never changed.
 * While transcription runs, the consultation page checks quietly in the background and
   redraws **once**, when the transcript and speaker labels are both ready.
-* `DIARIZATION_NUM_SPEAKERS` is blank by default, which detects the number of speakers
-  automatically. Set it to `2` if consultations always have exactly two people.
+* The diarization engine estimates the number of speakers automatically; no speaker
+  count needs to be entered in `.env`. Automatic counting can still merge similar voices.
+* Public Whisper weights are downloaded from Hugging Face, and sherpa-onnx models
+  from GitHub. Neither requires an account or access token. No hosted transcription
+  fallback is used.
 * Diarization runs in a **separate low-priority process**, because sherpa-onnx would
   otherwise freeze the web server (and uploads from doctors who are recording) while it works.
 * Speed on this test PC: about 20 s of speaker labelling for 80 s of audio (8 threads),
@@ -341,10 +345,10 @@ background noise.** See "Decisions" below.
 5. **HTTPS certificate** for using the app from devices other than the server itself.
 6. **Retention, backup and deletion policy** for recordings. Nothing is deleted
    automatically, and there is no delete button.
-7. **The PI's name.** Set `PI_NAME` to show it in the header and footer. Until then the PI line
-   is simply hidden. The IIIT Hyderabad logo is in `branding/`: `logo.png` is the banyan-tree
-   emblem in the top-left box, and `logo-full.png` is the full logo in the footer. Both were
-   taken from the institute's own poster template. The footer credits come from `TEAM_NAMES`
+7. **The PI's name.** Set `PI_NAME` to show it in the footer. Until then the PI line
+   is simply hidden. The ClinCord waveform emblem is `branding/logo.svg`. The original
+   IIIT Hyderabad emblem remains available as `branding/logo.png`; remove or rename
+   `logo.svg` to use that PNG instead. The footer credits come from `TEAM_NAMES`
    (default: Varun, Akash, Jaswanth).
 
 **Known limitations**

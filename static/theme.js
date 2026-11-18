@@ -1,7 +1,7 @@
-/* Apply the saved theme before styles load to avoid a light flash on reload. */
+/* Apply the saved theme, or default to dark, before styles load. */
 "use strict";
 try {
-  document.documentElement.dataset.theme = localStorage.getItem("consult-recorder-theme") === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = localStorage.getItem("consult-recorder-theme") === "light" ? "light" : "dark";
 } catch (_) {
-  document.documentElement.dataset.theme = "light";
+  document.documentElement.dataset.theme = "dark";
 }

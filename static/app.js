@@ -649,12 +649,12 @@ function themeToggle() {
 function brandBlock() {
   const c = state.config;
   const logo = c.logoUrl
-    ? h("img", { class: "logo", src: c.logoUrl, alt: `${c.institutionName} logo` })
-    : h("span", { class: "logo-placeholder" }, c.institutionName.slice(0, 4));
+    ? h("img", { class: "logo", src: c.logoUrl, alt: `${c.appTitle} logo` })
+    : h("span", { class: "logo-placeholder" }, initials(c.appTitle));
   return h("a", { class: "brand", href: "#/" }, h("span", { class: "logo-box" }, logo),
     h("span", { class: "brand-text" },
       h("span", { class: "brand-title" }, c.appTitle),
-      h("span", { class: "brand-sub" }, c.institutionName)));
+      c.appSubtitle ? h("span", { class: "brand-sub" }, c.appSubtitle) : null));
 }
 
 function renderChrome(showAccount = true) {
@@ -691,8 +691,10 @@ function authShell(...children) {
   return h("div", { class: "auth" },
     h("aside", { class: "auth-aside" },
       h("div", { class: "auth-aside-inner" },
-        h("div", { class: "auth-mark" }, icon("mic")),
+        h("div", { class: "auth-mark" }, c.logoUrl
+          ? h("img", { class: "logo", src: c.logoUrl, alt: "" }) : icon("wave")),
         h("h2", {}, c.appTitle),
+        c.appSubtitle ? h("p", { class: "auth-brand-sub" }, c.appSubtitle) : null,
         h("p", {}, "Record the whole consultation with one tap, then review it after the visit."),
         h("ul", { class: "auth-points" },
           h("li", {}, icon("mic"), "One Start, one Stop – recording continues through pauses"),
@@ -1589,5 +1591,6 @@ async function viewPatient(pid) {
     return;
   }
   document.title = state.config.appTitle;
+  if (state.config.logoUrl) $('link[rel="icon"]').href = state.config.logoUrl;
   route();
 })();

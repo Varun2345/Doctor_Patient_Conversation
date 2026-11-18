@@ -197,6 +197,7 @@ def _load_whisper():
     global _whisper_model
     if _whisper_model is None:
         from faster_whisper import WhisperModel  # optional dependency
+        from huggingface_hub.errors import LocalEntryNotFoundError
 
         settings.model_dir.mkdir(parents=True, exist_ok=True)
         device, compute = whisper_runtime()
@@ -204,17 +205,26 @@ def _load_whisper():
             add_cuda_libraries()
         try:
             model = WhisperModel(settings.whisper_model, device=device, compute_type=compute,
-                                 download_root=str(settings.model_dir))
+                                 download_root=str(settings.model_dir),
+                                 local_files_only=settings.whisper_local_files_only)
             if device == "cuda":  # fail fast here if the CUDA libraries are missing
                 import numpy as np
                 model.detect_language(np.zeros(16000, dtype=np.float32))
+        except LocalEntryNotFoundError as exc:
+            raise RuntimeError(
+                "Whisper model files are not available locally. For first-time setup, "
+                "set HF_HUB_OFFLINE=0 and run 'python -m app.manage download-model' "
+                "with internet access; then enable offline mode after the download. "
+                "No account or token is required."
+            ) from exc
         except Exception as exc:
             if device != "cuda":
                 raise
             log.warning("GPU not usable for Whisper (%s); using the CPU instead", exc)
             device, compute = "cpu", "int8"
             model = WhisperModel(settings.whisper_model, device=device, compute_type=compute,
-                                 download_root=str(settings.model_dir))
+                                 download_root=str(settings.model_dir),
+                                 local_files_only=settings.whisper_local_files_only)
         log.info("Whisper %s loaded on %s (%s)", settings.whisper_model, device, compute)
         _whisper_model = model
     return _whisper_model
@@ -383,7 +393,7 @@ def _transcribe(cid: str, src: Path) -> None:
             segments, speakers = label_segments(segments, turns)
             fields.update({"diarization.status": "done", "diarization.engine": settings.diarization_engine,
                            "diarization.speakers": speakers,
-                           "diarization.numSpeakersSetting": settings.diarization_num_speakers,
+                           "diarization.speakerCountMode": "auto",
                            "diarization.turns": turns, "diarization.updatedAt": now()})
         except Exception as exc:
             log.warning("diarization failed for %s: %s", cid, exc)
@@ -423,7 +433,7 @@ def _load_diarizer():
             embedding=sherpa_onnx.SpeakerEmbeddingExtractorConfig(
                 model=str(settings.diarization_embedding_model), num_threads=threads),
             clustering=sherpa_onnx.FastClusteringConfig(
-                num_clusters=settings.diarization_num_speakers,
+                num_clusters=-1,  # infer the speaker count from the voice embeddings
                 threshold=settings.diarization_threshold),
             min_duration_on=0.3,
             min_duration_off=0.5,
@@ -444,9 +454,6 @@ def diarize_file(src: Path) -> list[dict]:
     import subprocess
     import sys
 
-    import tempfile
-    import wave
-
     kwargs: dict = {}
     if os.name == "nt":
         kwargs["creationflags"] = subprocess.BELOW_NORMAL_PRIORITY_CLASS
@@ -454,33 +461,9 @@ def diarize_file(src: Path) -> list[dict]:
         kwargs["preexec_fn"] = lambda: os.nice(10)
     root = str(Path(__file__).resolve().parent.parent)
     env = dict(os.environ)
-    tmpdir = None
-    if settings.diarization_engine == "pyannote":
-        # Decode here (the pyannote environment has no audio decoder) to a 16 kHz mono WAV.
-        from faster_whisper.audio import decode_audio
-        import numpy as np
-
-        tmpdir = tempfile.mkdtemp(prefix="diar-")
-        wav_path = Path(tmpdir) / "audio.wav"
-        pcm = (np.clip(decode_audio(str(src), sampling_rate=16000), -1, 1) * 32767).astype("<i2")
-        with wave.open(str(wav_path), "wb") as w:
-            w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000); w.writeframes(pcm.tobytes())
-        if settings.hf_token:
-            env["HF_TOKEN"] = settings.hf_token
-        env.setdefault("HF_HOME", str(settings.model_dir / "huggingface"))
-        cmd = [settings.diarization_python, "-m", "app.diarize_pyannote", str(wav_path),
-               "--pipeline", settings.pyannote_pipeline, "--threads", str(settings.diarization_threads)]
-        if settings.diarization_num_speakers > 0:
-            cmd += ["--speakers", str(settings.diarization_num_speakers)]
-    else:
-        cmd = [sys.executable, "-m", "app.diarize_worker", str(src)]
-    try:
-        result = subprocess.run(cmd, cwd=root, env=env, capture_output=True, text=True,
-                                encoding="utf-8", errors="replace", timeout=4 * 3600, **kwargs)
-    finally:
-        if tmpdir:
-            import shutil
-            shutil.rmtree(tmpdir, ignore_errors=True)
+    cmd = [sys.executable, "-m", "app.diarize_worker", str(src)]
+    result = subprocess.run(cmd, cwd=root, env=env, capture_output=True, text=True,
+                            encoding="utf-8", errors="replace", timeout=4 * 3600, **kwargs)
     if result.returncode != 0:
         lines = [l for l in (result.stderr or "").strip().splitlines() if l.strip()]
         raise RuntimeError(f"diarization process failed ({result.returncode}): "
@@ -568,7 +551,7 @@ def capabilities() -> dict:
         "transcriptionModel": settings.whisper_model
         if settings.transcription_engine != "none" else None,
         "diarization": settings.diarization_engine,
-        "diarizationSpeakers": settings.diarization_num_speakers
+        "diarizationSpeakers": -1  # automatic speaker counting
         if settings.diarization_engine != "none" else None,
     }
 

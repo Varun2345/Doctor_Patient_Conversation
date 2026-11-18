@@ -1,6 +1,5 @@
 """Score a diarization engine on the test conversations, using the app's own code path.
 
-    python tests/score_diarization.py --engine pyannote [--speakers N]
     python tests/score_diarization.py --engine sherpa-onnx
 
 For every test-audio/*.truth.json: speakers found vs real, turns whose dominant label maps to
@@ -26,14 +25,12 @@ def ov(a0, a1, b0, b1):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--engine", default="pyannote")
-    ap.add_argument("--speakers", type=int, default=0)
+    ap.add_argument("--engine", choices=["sherpa-onnx"], default="sherpa-onnx")
     args = ap.parse_args()
     os.environ["DIARIZATION_ENGINE"] = args.engine
-    os.environ["DIARIZATION_NUM_SPEAKERS"] = str(args.speakers) if args.speakers else ""
     from app import processing
 
-    print(f"engine={args.engine} speakers={'auto' if not args.speakers else args.speakers}")
+    print(f"engine={args.engine} speakers=auto")
     for f in sorted((ROOT / "test-audio").glob("*.truth.json")):
         truth = json.loads(f.read_text(encoding="utf-8"))
         real = truth["turns"]

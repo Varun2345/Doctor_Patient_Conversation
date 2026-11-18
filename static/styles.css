@@ -103,16 +103,16 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -.01em; }
 .brand { display: flex; align-items: center; gap: .8rem; min-width: 0; text-decoration: none; color: inherit; }
 .logo-box {
   width: 46px; height: 46px; flex: none; display: grid; place-items: center;
-  background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 4px;
+  background: #112f40; border: 1px solid var(--line); border-radius: 12px; padding: 0;
   box-shadow: var(--shadow-sm);
 }
 .logo { width: 100%; height: 100%; object-fit: contain; display: block; }
 .logo-placeholder { font-size: .7rem; font-weight: 700; letter-spacing: .04em; color: var(--ink-3); }
 .brand-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
-.brand-title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; overflow-wrap: anywhere; }
+.brand-title { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; overflow-wrap: anywhere; }
 .theme-toggle { flex: none; width: 40px; height: 40px; padding: 0; justify-content: center; border: 1px solid var(--line-2); color: var(--ink-2); }
 .theme-toggle .ic { width: 20px; height: 20px; }
-.brand-sub { font-size: .78rem; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-sub { font-size: .68rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .04em; line-height: 1.4; margin-top: .2rem; }
 .spacer { flex: 1; }
 .who { display: flex; align-items: center; gap: .6rem; }
 .who-text { display: flex; flex-direction: column; line-height: 1.2; text-align: right; }
@@ -233,6 +233,7 @@ textarea { min-height: 50vh; line-height: 1.6; resize: vertical; font-size: .95r
 .auth-mark .ic { width: 28px; height: 28px; }
 .auth-aside h2 { font-size: 1.75rem; margin: 0 0 .6rem; line-height: 1.2; }
 .auth-aside p { margin: 0 0 1.6rem; color: rgba(255, 255, 255, .82); }
+.auth-aside .auth-brand-sub { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: #b8e5f0; margin-bottom: 1.2rem; }
 .auth-points { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }
 .auth-points li { display: flex; gap: .7rem; align-items: center; font-size: .93rem; color: rgba(255, 255, 255, .92); }
 .auth-points .ic { width: 34px; height: 34px; padding: 8px; border-radius: 10px; background: rgba(255, 255, 255, .13); }
@@ -478,7 +479,8 @@ details.tech summary { cursor: pointer; color: var(--ink-3); font-size: .9rem; f
   body { font-size: 16px; }
   .view { padding: 1.1rem .9rem 2.5rem; }
   .topbar-inner { padding: .55rem .9rem; gap: .6rem; }
-  .brand-sub, .who-text, .signout span { display: none; }
+  .who-text, .signout span { display: none; }
+  .brand-sub { font-size: .6rem; }
   .hero { grid-template-columns: 1fr; padding: 1.4rem; }
   .big.new { width: 100%; }
   .greet h1 { font-size: 1.4rem; }

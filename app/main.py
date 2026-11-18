@@ -190,11 +190,13 @@ def logo_file(stem: str = "logo"):
 
 @app.get("/api/config")
 def public_config():
+    logo = logo_file()
     return {
         "appTitle": settings.app_title,
+        "appSubtitle": settings.app_subtitle,
         "institutionName": settings.institution_name,
         "piName": settings.pi_name or None,
-        "logoUrl": "/branding/logo" if logo_file() else None,
+        "logoUrl": f"/branding/logo?v={logo.stat().st_mtime_ns}" if logo else None,
         "logoFullUrl": "/branding/logo-full" if logo_file("logo-full") else None,
         "teamNames": settings.team_names,
         "dbInternal": settings.db_internal,

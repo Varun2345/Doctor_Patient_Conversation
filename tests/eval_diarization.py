@@ -1,6 +1,6 @@
 """Score the app's speaker labelling against the known timings of a test conversation.
 
-    python tests/eval_diarization.py test-audio/three-speakers-english.wav [--multilingual] [--speakers N]
+    python tests/eval_diarization.py test-audio/three-speakers-english.wav [--multilingual]
 
 Uses exactly the server's pipeline: faster-whisper (word timestamps) + sherpa-onnx
 diarization (separate process) + label_segments(). Prints the labelled transcript and:
@@ -28,10 +28,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("wav")
     ap.add_argument("--multilingual", action="store_true", help="per-segment language detection")
-    ap.add_argument("--speakers", type=int, default=0, help="fix the number of speakers (0 = auto)")
     args = ap.parse_args()
-    if args.speakers:
-        os.environ["DIARIZATION_NUM_SPEAKERS"] = str(args.speakers)
     os.environ["DIARIZATION_ENGINE"] = "sherpa-onnx"
     from app import processing
 

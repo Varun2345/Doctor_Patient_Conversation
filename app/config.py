@@ -125,7 +125,8 @@ class Settings:
         self.signup_code = _str("SIGNUP_CODE")
 
         # --- Branding (do not invent names: leave blank until confirmed) --
-        self.app_title = _str("APP_TITLE", "Consultation Recorder")
+        self.app_title = _str("APP_TITLE", "ClinCord")
+        self.app_subtitle = _str("APP_SUBTITLE", "Clinical Conversation Recording")
         self.institution_name = _str("INSTITUTION_NAME", "IIIT Hyderabad")
         self.pi_name = _str("PI_NAME", "Parameshwari Krishnamurthy")  # shown in the footer
         # Names shown in the footer, comma separated.
@@ -169,17 +170,10 @@ class Settings:
         self.whisper_languages = [l.strip().lower() for l in _str("WHISPER_LANGUAGES", "en,hi,te").split(",")
                                   if l.strip()]
         self.model_dir = _path("MODEL_DIR", "models")
+        self.whisper_local_files_only = _bool("HF_HUB_OFFLINE", False)
         # Speaker labels (anonymous Speaker A/B/...) for the after-session transcript.
         # sherpa-onnx runs locally on CPU (pyannote segmentation + speaker embeddings, ONNX).
-        self.diarization_engine = _choice("DIARIZATION_ENGINE", "none", ("none", "sherpa-onnx", "pyannote"))
-        # pyannote runs in its own Python environment (PyTorch + pyannote.audio).
-        default_py = BASE_DIR / ".venv-diar" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
-        self.diarization_python = _str("DIARIZATION_PYTHON") or str(default_py)
-        self.pyannote_pipeline = _str("PYANNOTE_PIPELINE", "pyannote/speaker-diarization-community-1")
-        # Hugging Face token: only needed for the one-time download of the gated model.
-        self.hf_token = _str("HF_TOKEN")
-        num = _str("DIARIZATION_NUM_SPEAKERS")
-        self.diarization_num_speakers = int(num) if num.isdigit() and int(num) > 0 else -1  # -1 = auto
+        self.diarization_engine = _choice("DIARIZATION_ENGINE", "none", ("none", "sherpa-onnx"))
         try:
             self.diarization_threshold = float(_str("DIARIZATION_THRESHOLD", "0.5"))
         except ValueError:
